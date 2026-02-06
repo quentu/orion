@@ -33,13 +33,12 @@ function displayMessage(text, className) {
 
 async function getAIResponse(userMessage) {
     // Example AJAX call to a local server interacting with Ollama Llama 3
-    const response = await fetch('http://localhost:5000/ollama', {
+    const response = await fetch('/ollama', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage }),
     });
+
 
     if (!response.ok) {
         throw new Error('Network response was not ok');
