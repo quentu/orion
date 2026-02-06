@@ -37,7 +37,7 @@ app.post("/ollama", async (req, res) => {
 
     // Configure these however you want
     const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || "http://localhost:11434";
-    const MODEL = process.env.OLLAMA_MODEL || "llama3";const MODEL = process.env.OLLAMA_MODEL || "hf.co/Qwen/Qwen2.5-Coder-32B-Instruct-GGUF:latest";
+    const MODEL = process.env.OLLAMA_MODEL || "hf.co/Qwen/Qwen2.5-Coder-32B-Instruct-GGUF:latest";
 
     // Call Ollama
     const ollamaRes = await fetchFn(`${OLLAMA_BASE_URL}/api/generate`, {
