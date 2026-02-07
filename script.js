@@ -1,4 +1,8 @@
 const DEV_MODE = false;
+function renderMarkdown(el, markdownText) {
+    const html = marked.parse(markdownText, { breaks: true });
+    el.innerHTML = DOMPurify.sanitize(html);
+}
 
 document.getElementById('send-button').addEventListener('click', sendMessage);
 document.getElementById('user-input').addEventListener('keypress', function (e) {
@@ -38,7 +42,9 @@ async function sendMessage() {
                 started = true;
             }
 
-            aiEl.textContent += token;
+            aiEl.dataset.raw = (aiEl.dataset.raw || "") + token;
+            renderMarkdown(aiEl, aiEl.dataset.raw);
+
             forceScrollToBottom();
         });
 
@@ -58,7 +64,8 @@ async function sendMessage() {
 
 function displayMessage(text, className) {
     const messageElement = document.createElement('div');
-    messageElement.textContent = text;
+    messageElement.dataset.raw = text;
+    renderMarkdown(messageElement, text);
     messageElement.className = `message ${className}`;
     document.getElementById('messages').appendChild(messageElement);
     document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
@@ -175,6 +182,7 @@ function dummyResponse(userMessage) {
             "The quick brown fox jumps over the lazy GPU.",
             "Your UI could use some improvment.",
             `Bro said: "${userMessage}", LOL.`,
+            "**Bold works** | Here is `inline code` | - List item one | - List item two | ```js function hello(){console.log('Code block works')} ```",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         ];
 
