@@ -5,7 +5,7 @@ document.getElementById('user-input').addEventListener('keypress', function (e) 
     }
 });
 
-function sendMessage() {
+async function sendMessage() {
     const userInput = document.getElementById('user-input');
     const messageText = userInput.value.trim();
 
@@ -14,21 +14,41 @@ function sendMessage() {
     displayMessage(messageText, 'user-message');
     userInput.value = '';
 
-    
+    // show typing bubble immediately
     const typingBubble = createTypingBubble();
     document.getElementById('messages').appendChild(typingBubble);
     forceScrollToBottom();
 
-    
-    getAIResponse(messageText).then(aiResponse => {
-        typingBubble.remove(); 
-        displayMessage(aiResponse, 'ai-message');
-    }).catch(error => {
+    // create an assistant bubble to append tokens into
+    const aiEl = document.createElement('div');
+    aiEl.className = 'message ai-message';
+
+    let started = false;
+
+    try {
+        await streamAIResponse(messageText, (token) => {
+            if (!started) {
+                typingBubble.remove();
+                document.getElementById('messages').appendChild(aiEl);
+                started = true;
+            }
+
+            aiEl.textContent += token;
+            forceScrollToBottom();
+        });
+
+        // fallback
+        if (!started) {
+            typingBubble.remove();
+            document.getElementById('messages').appendChild(aiEl);
+        }
+    } catch (error) {
         console.error('Error:', error);
         typingBubble.remove();
         displayMessage('Sorry, something went wrong.', 'ai-message');
-    });
+    }
 }
+
 
 
 function displayMessage(text, className) {
@@ -38,6 +58,28 @@ function displayMessage(text, className) {
     document.getElementById('messages').appendChild(messageElement);
     document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
     forceScrollToBottom();
+}
+async function streamAIResponse(userMessage, onToken) {
+    const response = await fetch('/ollama', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage }),
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        if (chunk) onToken(chunk);
+    }
 }
 
 async function getAIResponse(userMessage) {
