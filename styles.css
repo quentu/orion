@@ -7,10 +7,11 @@
     
 }
 :root {
-  --color-accent: #a5b2eb;
-  --color-accent-dark: #7c8dd8;
-  --color-background: #2b2d3b;
-  --color-foreground: #494c65;
+  --color-accent1: #4a4873;
+  --color-accent1-hover: #3a3863;
+  --color-accent2: #683d99;
+  --color-background: #13131e;
+  --color-foreground: #1e1e30;
   --color-text: #ffffff;
 
 }
@@ -40,7 +41,7 @@ html, body {
 
 /* Change thumb color on hover */
 ::-webkit-scrollbar-thumb:hover {
-    display: var(--color-accent-dark);
+    display: var(--color-accent1-hover);
 }
 
 /* Page layout */
@@ -88,21 +89,21 @@ html, body {
 .message {
     max-width: 65%;
     padding: 14px 18px;
-    border-radius: 16px;
+    border-radius: 24px;
     line-height: 1.5;
     font-size: 15px;
 }
 
 .user-message {
     align-self: flex-end;
-    background: var(--color-accent);
+    background: var(--color-accent1);
     color: var(--color-text);
     border-bottom-right-radius: 6px;
 }
 
 .ai-message {
     align-self: flex-start;
-    background: #3a3a35;
+    background: none;
     color: var(--color-text);
     border-bottom-left-radius: 6px;
 }
@@ -134,7 +135,7 @@ html, body {
     height: 42px;
     border-radius: 50%;
     border: none;
-    background: var(--color-accent);
+    background: var(--color-accent1);
     color: var(--color-text);
     font-size: 18px;
     cursor: pointer;
@@ -143,14 +144,14 @@ html, body {
 
 #send-button:hover {
     transform: translateY(-1px);
-    background: var(--color-accent-dark);
+    background: var(--color-accent1-hover);
 }
 
 
 /* --- Typing bubble --- */
 .message.typing {
   align-self: flex-start;
-  background: #3a3a35; 
+  background: none;
   color: var(--color-text);
   border-bottom-left-radius: 6px;
   width: fit-content;

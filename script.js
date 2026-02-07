@@ -1,3 +1,5 @@
+const DEV_MODE = true;
+
 document.getElementById('send-button').addEventListener('click', sendMessage);
 document.getElementById('user-input').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
@@ -26,7 +28,8 @@ async function sendMessage() {
     let started = false;
 
     try {
-        await streamAIResponse(messageText, (token) => {
+        const streamer = DEV_MODE ? fakeStreamAIResponse : streamAIResponse;
+        await streamer(messageText, (token) => {
             if (!started) {
                 typingBubble.remove();
                 document.getElementById('messages').appendChild(aiEl);
@@ -59,6 +62,19 @@ function displayMessage(text, className) {
     document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
     forceScrollToBottom();
 }
+
+async function fakeStreamAIResponse(userMessage, onToken) {
+    const fakeText = await dummyResponse(userMessage);
+
+    // split text into "tokens"
+    const tokens = fakeText.split(" ");
+
+    for (let i = 0; i < tokens.length; i++) {
+        await new Promise(r => setTimeout(r, 80)); // typing speed
+        onToken(tokens[i] + " ");
+    }
+}
+
 async function streamAIResponse(userMessage, onToken) {
     const response = await fetch('/ollama', {
         method: 'POST',
@@ -145,4 +161,26 @@ function createTypingBubble() {
     </div>
   `;
   return bubble;
+}
+
+
+
+function dummyResponse(userMessage) {
+    return new Promise((resolve) => {
+        const fakeReplies = [
+            "This is a dummy response for UI testing.",
+            "Brr computer noises",
+            "The quick brown fox jumps over the lazy GPU.",
+            "Your UI could use some improvment.",
+            `Bro said: "${userMessage}", LOL.`,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        ];
+
+        const delay = 1200 + Math.random() * 1200;
+
+        setTimeout(() => {
+            const reply = fakeReplies[Math.floor(Math.random() * fakeReplies.length)];
+            resolve(reply);
+        }, delay);
+    });
 }
