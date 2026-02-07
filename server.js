@@ -28,6 +28,8 @@ app.get("/health", (req, res) => {
 
 // Your UI will POST here. This route calls Ollama and returns the model output.
 app.post("/ollama", async (req, res) => {
+
+    
   try {
     const userMessage = req.body?.message;
 

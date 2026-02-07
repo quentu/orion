@@ -14,14 +14,22 @@ function sendMessage() {
     displayMessage(messageText, 'user-message');
     userInput.value = '';
 
-    // Send the message to the local AI and get the response
+    
+    const typingBubble = createTypingBubble();
+    document.getElementById('messages').appendChild(typingBubble);
+    forceScrollToBottom();
+
+    
     getAIResponse(messageText).then(aiResponse => {
+        typingBubble.remove(); 
         displayMessage(aiResponse, 'ai-message');
     }).catch(error => {
         console.error('Error:', error);
+        typingBubble.remove();
         displayMessage('Sorry, something went wrong.', 'ai-message');
     });
 }
+
 
 function displayMessage(text, className) {
     const messageElement = document.createElement('div');
@@ -29,6 +37,7 @@ function displayMessage(text, className) {
     messageElement.className = `message ${className}`;
     document.getElementById('messages').appendChild(messageElement);
     document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+    forceScrollToBottom();
 }
 
 async function getAIResponse(userMessage) {
@@ -46,4 +55,52 @@ async function getAIResponse(userMessage) {
 
     const data = await response.json();
     return data.response; // Adjust this based on your server's response structure
+}
+
+const textOptions = [
+    "What's on your mind?",
+    "Ready whenever you are.",
+    "You better not be vibe-coding.",
+    "Plotting something big?",
+    "How can I help today?"
+];
+
+
+function getRandomText(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length); // choose random array index
+    return arr[randomIndex];
+}
+
+function displayRandomText() {
+    const displayElement = document.getElementById("greeting");
+    const newText = getRandomText(textOptions);
+    displayElement.textContent = newText;
+}
+
+displayRandomText();
+
+// --- FORCE CHAT TO STAY AT BOTTOM LIKE REAL CHAT APPS ---
+
+const userInputBox = document.getElementById('user-input');
+const messagesDiv = document.getElementById('messages');
+
+function forceScrollToBottom() {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// When you click into the input
+userInputBox.addEventListener('focus', forceScrollToBottom);
+
+// When you start typing
+userInputBox.addEventListener('input', forceScrollToBottom);
+
+function createTypingBubble() {
+  const bubble = document.createElement("div");
+  bubble.className = "message assistant typing";
+  bubble.innerHTML = `
+    <div class="dots">
+      <span></span><span></span><span></span>
+    </div>
+  `;
+  return bubble;
 }
