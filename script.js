@@ -1,9 +1,11 @@
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 document.getElementById('send-button').addEventListener('click', sendMessage);
 document.getElementById('user-input').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         sendMessage();
+        const temp = document.getElementById("greeting");
+        temp.remove();
     }
 });
 
