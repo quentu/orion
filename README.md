@@ -59,7 +59,7 @@ http://localhost:5000
 
 ---
 
-## Environment Variables (optional)
+## Environment Variables
 
 You can change the model or Ollama location:
 
