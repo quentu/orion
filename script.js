@@ -1,4 +1,5 @@
-const DEV_MODE = false;
+const DEV_MODE = true;
+const temp = document.getElementById("greeting");
 function renderMarkdown(el, markdownText) {
     const html = marked.parse(markdownText, { breaks: true });
     el.innerHTML = DOMPurify.sanitize(html);
@@ -8,15 +9,14 @@ document.getElementById('send-button').addEventListener('click', sendMessage);
 document.getElementById('user-input').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         sendMessage();
-        const temp = document.getElementById("greeting");
-        temp.remove();
     }
 });
 
 async function sendMessage() {
+    temp.remove();
     const userInput = document.getElementById('user-input');
     const messageText = userInput.value.trim();
-
+        
     if (messageText === '') return;
 
     displayMessage(messageText, 'user-message');
@@ -58,6 +58,7 @@ async function sendMessage() {
         typingBubble.remove();
         displayMessage('Sorry, something went wrong.', 'ai-message');
     }
+
 }
 
 

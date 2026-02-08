@@ -93,7 +93,7 @@ html, body {
 
 /* Chat window */
 #chat-window {
-    max-height: 420px;
+    max-height: 90%;
     overflow-y: auto;
     padding-right: 6px;
 }
