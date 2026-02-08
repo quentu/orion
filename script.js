@@ -14,6 +14,13 @@ document.getElementById('user-input').addEventListener('keypress', function (e) 
 
 async function sendMessage() {
     temp.remove();
+    
+    // Add chat-active class to main when chat starts
+    const mainElement = document.querySelector('main');
+    if (!mainElement.classList.contains('chat-active')) {
+        mainElement.classList.add('chat-active');
+    }
+    
     const userInput = document.getElementById('user-input');
     const messageText = userInput.value.trim();
         
@@ -147,7 +154,7 @@ function displayRandomText() {
 
 displayRandomText();
 
-// --- FORCE CHAT TO STAY AT BOTTOM LIKE REAL CHAT APPS ---
+// move input
 
 const userInputBox = document.getElementById('user-input');
 const messagesDiv = document.getElementById('messages');
@@ -156,10 +163,8 @@ function forceScrollToBottom() {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// When you click into the input
 userInputBox.addEventListener('focus', forceScrollToBottom);
 
-// When you start typing
 userInputBox.addEventListener('input', forceScrollToBottom);
 
 function createTypingBubble() {
