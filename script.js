@@ -1,4 +1,4 @@
-const DEV_MODE = true;
+const DEV_MODE = false;
 const temp = document.getElementById("greeting");
 function renderMarkdown(el, markdownText) {
     const html = marked.parse(markdownText, { breaks: true });
