@@ -1,5 +1,9 @@
 # Orion
 
+<p align="center">
+  <img src="assets\orion-banner.png" />
+</p>
+
 **Orion is an open-source control surface for self-hosted LLM servers.**
 
 A minimal, fast, distraction-free web UI that connects directly to your local Ollama instance and streams model responses in real time.
