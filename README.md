@@ -1,7 +1,7 @@
 # Orion
 
 <p align="center">
-  <img src="assets\orion-banner.png" />
+  <img src="assets\orion-banner.png" width="400px"/>
 </p>
 
 **Orion is an open-source control surface for self-hosted LLM servers.**
