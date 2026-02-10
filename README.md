@@ -1,5 +1,3 @@
-# Orion
-
 <p align="center">
   <img src="assets\orion-banner.png" width="400px"/>
 </p>
