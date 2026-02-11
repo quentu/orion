@@ -6,7 +6,7 @@
 
 A minimal, fast, distraction-free web UI that connects directly to your local Ollama instance and streams model responses in real time.
 
-Built for homelabbers, tinkerers, and anyone who believes AI should run on **their** hardware, not a corpotate cloud.
+Built for homelabbers, tinkerers, and anyone who believes AI should run on their hardware, not a corpotate cloud.
 
 ## What Orion does right now
 
